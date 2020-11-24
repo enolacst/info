@@ -11,13 +11,10 @@ QUEUE :File avec priorité
 
 from ezCLI import testcode
 
-"""
-Axiomes à vérifier :
-"""
 
 class BoundedOneQueue:
     def __init__(self):
-        
+       """création de la file avec priorité bornée n'utilisant qu'une seule liste""" 
     @property
     def max_priority:
         """envoie la valeur utlisée lors de la création de la file"""
@@ -54,6 +51,7 @@ class BoundedOneQueue:
 
 class BoundedListQueue:
     def __init__():
+        """création d'une file avec priorité bornée utilisant une liste, priorité=index"""
         
     @property
     def max_priority:
