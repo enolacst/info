@@ -7,6 +7,12 @@ __usage__ = "Manipulation file avec priorité"
 
 """
 QUEUE :File avec priorité
+une liste chainee servant de file (FIFO: First In, First Out) 
+    utilisation de deux sentinelles pour les acces
+
+    hq: head of the queue (the first element)
+    tq: tail of the queue (the last element)
+    count: number of element in the queue
 """
 
 from ezCLI import testcode
