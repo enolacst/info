@@ -54,11 +54,11 @@ class BoundedOneQueue:
        self.__cpt = 0
 
     @property
-    def max_priority(self):
+    def max_priority(self)->int:
         """envoie la valeur utlisée lors de la création de la file"""
         return self.__max_priority
         
-    def __len__(self):
+    def __len__(self)->int:
         """renvoie le nombre d’éléments dans la file"""
         return self.__cpt
     
@@ -111,13 +111,13 @@ class BoundedOneQueue:
         """revoie vrai si la file est vide, faux sinon"""
         return self.__hq is None
 
-    def to_list(self):
+    def to_list(self)->list:
         """renvoie une liste python des paires (v, p) présentes dans la file"""
 
-    def howmany(self):
+    def howmany(self)->int:
         """renvoie le nombre d’éléments dans la file ayant cette priorité"""
         
-    def summary(self):
+    def summary(self)->list:
         """renvoie une liste python de taille max_priority et contenant la distribution des priorités ordonnées de manière croissante"""
 
 class BoundedListQueue:
