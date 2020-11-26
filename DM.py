@@ -95,7 +95,7 @@ class BoundedOneQueue:
                     if parcours.priority > v:
                         if precedent is not None:
                             precedent.next = node
-                        else:
+                            else:
                             self.__hq = node
                         node.next = parcours
                         parcours = None
@@ -127,6 +127,9 @@ class BoundedOneQueue:
         """renvoie une liste python de taille max_priority et contenant la distribution des priorités ordonnées de manière croissante"""
 
 class BoundedListQueue:
+        # attributs
+    __slots__ = ('__max_priority', '__cpt', '__hq', '__tq')
+    
     def __init__():
         """création d'une file avec priorité bornée utilisant une liste, priorité=index"""
         
@@ -134,14 +137,14 @@ class BoundedListQueue:
     def max_priority(self):
         """envoie la valeur utlisée lors de la création de la file"""
         
-    def __len__(self):
+    def __len__(self)->int:
         """renvoie le nombre d’éléments dans la file"""
         
-    def pop (slef):
+    def pop (self)->None:
         """enlève le premier élément de plus basse priorité
         require :file non vide"""
         
-    def push(self):
+    def push(self)->None:
         """permet d'inserer un élément"""
         if p<max-priority:
             return
@@ -155,13 +158,13 @@ class BoundedListQueue:
     def empty (self)->bool:
         """revoie vrai si la file est vide, faux sinon"""
 
-    def to_list(self):
-        """renvoie une liste python des paires (v, p) présentes dans la file"""
+    def to_list(self)->list:
+        """renvoie une liste python des paires (v, p) présentes dans la file, p=index"""
 
-    def howmany(self):
+    def howmany(self)->int:
         """renvoie le nombre d’éléments dans la file ayant cette priorité"""
         
-    def summary(self):
+    def summary(self)->list:
         """renvoie une liste python de taille max_priority et contenant la distribution des priorités ordonnées de manière croissante"""
 
 if __name__ == "__main__":
