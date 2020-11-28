@@ -87,26 +87,31 @@ class BoundedOneQueue:
             node = QNode(v,p)
             if self.empty(): #si premiere insertion la tete prend l'element
                 self.__hq = node
+                self.__tq = node
             else:
                 parcours = self.__hq
                 precedent = None
                 found = False
                 while parcours is not None:
                 # on parcours chaque element jusqu'a trouver celui de propriety supérieur
-                    if parcours.priority > v:
+                    if parcours.priority > p:
+                        node.next = parcours
                         if precedent is not None:
                             precedent.next = node
                         else:
                             self.__hq = node
-                        node.next = parcours
                         parcours = None
                         found = True
                     else:
                         precedent = parcours
                         parcours = parcours.next
                 if found == False:
-                    precedent.next = node
-                    node = self.__tq 
+                    self.__tq = node
+                    if precedent is None:
+                        self.__hq.next = node
+                    else:
+                        precedent.next = node
+                    
 
             
     def first(self):
@@ -124,7 +129,6 @@ class BoundedOneQueue:
         _current = self.__hq # curseur de parcours
         _store = [] # structure de stockage
         while _current is not None:
-            print(_current)
             _store.append([_current.value, _current.priority])
             _current = _current.next
         return _store
@@ -194,9 +198,6 @@ if __name__ == "__main__":
     code = """
 # creation file vide
 queue = BoundedOneQueue(10)
-#test
-queue.push(5, -1)
-queue.push(30, 10)
 
 # max_priority
 queue.max_priority
