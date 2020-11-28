@@ -75,12 +75,13 @@ class BoundedOneQueue:
             print('nothing to pop...')
         else:
             self.__cpt -= 1
-            first = self.__hq
             self.__hq = self.__hq.next
+            if self.__cpt == 0:
+                self.__tq = None
                 
     def push(self,v:any,p:int)->None:
         """permet d'inserer un élément"""
-        if 0>p or p>=self.max_priority :
+        if 0>p>=self.max_priority :
             print('priority not available...')
         else :
             self.__cpt += 1
@@ -105,12 +106,12 @@ class BoundedOneQueue:
                     else:
                         precedent = parcours
                         parcours = parcours.next
-                if found == False:
+                if found == False: # on place l'élément à la fin
                     self.__tq = node
                     if precedent is None:
-                        self.__hq.next = node
+                        self.__hq.next = self.__tq
                     else:
-                        precedent.next = node
+                        precedent.next = self.__tq
                     
 
             
