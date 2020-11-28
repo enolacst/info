@@ -74,12 +74,13 @@ class BoundedOneQueue:
         if self.empty():
             print('nothing to pop...')
         else:
+            self.__cpt -= 1
             first = self.__hq
             self.__hq = self.__hq.next
                 
-    def push(self,p:int,v:any)->None:
+    def push(self,v:any,p:int)->None:
         """permet d'inserer un élément"""
-        if 0<p<=self.max_priority :
+        if 0>p or p>=self.max_priority :
             print('priority not available...')
         else :
             self.__cpt += 1
@@ -95,7 +96,7 @@ class BoundedOneQueue:
                     if parcours.priority > v:
                         if precedent is not None:
                             precedent.next = node
-                            else:
+                        else:
                             self.__hq = node
                         node.next = parcours
                         parcours = None
@@ -111,7 +112,8 @@ class BoundedOneQueue:
     def first(self):
         """renvoie la première paire (v, p) de la liste
         require : file non vide"""
-        return self.__hq
+        if not self.empty():
+            return [self.__hq.value, self.__hq.priority]
         
     def empty (self)->bool:
         """revoie vrai si la file est vide, faux sinon"""
@@ -119,12 +121,33 @@ class BoundedOneQueue:
 
     def to_list(self)->list:
         """renvoie une liste python des paires (v, p) présentes dans la file"""
+        _current = self.__hq # curseur de parcours
+        _store = [] # structure de stockage
+        while _current is not None:
+            print(_current)
+            _store.append([_current.value, _current.priority])
+            _current = _current.next
+        return _store
 
-    def howmany(self)->int:
+    def howmany(self, p:int)->int:
         """renvoie le nombre d’éléments dans la file ayant cette priorité"""
+        _current = self.__hq # curseur de parcours
+        _nbElem = 0 # nombre d'élément trouvé
+        while _current is not None:
+            if _current.priority == p:
+                _nbElem += 1
+            _current = _current.next
+        return _nbElem
         
     def summary(self)->list:
         """renvoie une liste python de taille max_priority et contenant la distribution des priorités ordonnées de manière croissante"""
+        _current = self.__hq # curseur de parcours
+        _store = [] # structure de stockage
+        while _current is not None:
+            if len(_store) == 0 or _store[len(_store)-1] != _current.priority:
+                _store.append(_current.priority)
+            _current = _current.next
+        return _store
 
 class BoundedListQueue:
         # attributs
@@ -171,6 +194,9 @@ if __name__ == "__main__":
     code = """
 # creation file vide
 queue = BoundedOneQueue(10)
+#test
+queue.push(5, -1)
+queue.push(30, 10)
 
 # max_priority
 queue.max_priority
@@ -182,15 +208,34 @@ len(queue)
 queue.pop()
 
 # push
+len(queue) == 0
 queue.push(12, 5)
+len(queue) == 1
+
+print(queue.to_list())
 
 # first
+queue.push(10, 1)
+print(queue.to_list())
+queue.first() == [10, 1]
 
 # empty
+queue.empty() == False
+queue.pop()
+queue.pop()
+queue.empty() == True
 
 # to_list
+queue.push(28, 1)
+queue.push(11, 5)
+list = queue.to_list()
+print(list)
 
 # howmany
+queue.howmany(1) == 1
+queue.howmany(3) == 0
 
 # summary
+queue.summary() == [1, 5]
+
 """ ; testcode(code)
