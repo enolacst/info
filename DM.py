@@ -148,16 +148,24 @@ class BoundedOneQueue:
         """renvoie une liste python de taille max_priority et contenant la distribution des priorités ordonnées de manière croissante"""
         _current = self.__hq # curseur de parcours
         _store = [] # structure de stockage
-        while _current is not None:
-            if len(_store) == 0 or _store[len(_store)-1] != _current.priority:
-                _store.append(_current.priority)
-            _current = _current.next
+        _currentPriority = 0
+        _store.append(0)
+        while _currentPriority != self.max_priority:
+            if _current is not None and _currentPriority == _current.priority:
+                _store[_currentPriority] += 1
+                _current = _current.next
+            else:
+                _currentPriority += 1
+                _store.append(0)
         return _store
 
 class BoundedListQueue:
         # attributs
     __slots__ = ('__max_priority', '__cpt', '__hq', '__tq')
     
+    #[[(v,next),(v,next) -> None], [v,v,v], [empty]] //3
+
+
     def __init__():
         """création d'une file avec priorité bornée utilisant une liste, priorité=index"""
         
@@ -238,6 +246,6 @@ queue.howmany(1) == 1
 queue.howmany(3) == 0
 
 # summary
-queue.summary() == [1, 5]
+queue.summary() == [0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0]
 
 """ ; testcode(code)
