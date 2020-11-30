@@ -17,6 +17,8 @@ une liste chainee servant de file (FIFO: First In, First Out)
 
 from ezCLI import testcode
 
+from simpleQueue import SQueue
+
 class QNode:
     """ un element pour la liste chainee """
     __slots__ = ('__value', '__priority', '__next')
@@ -120,6 +122,8 @@ class BoundedOneQueue:
         require : file non vide"""
         if not self.empty():
             return [self.__hq.value, self.__hq.priority]
+        else:
+            return None
         
     def empty (self)->bool:
         """revoie vrai si la file est vide, faux sinon"""
@@ -156,54 +160,98 @@ class BoundedOneQueue:
                 _current = _current.next
             else:
                 _currentPriority += 1
-                _store.append(0)
+                if _currentPriority != self.max_priority:
+                    _store.append(0)
         return _store
 
 class BoundedListQueue:
         # attributs
-    __slots__ = ('__max_priority', '__cpt', '__hq', '__tq')
+    __slots__ = ('__max_priority', '__cpt', '__list')
     
     #[[(v,next),(v,next) -> None], [v,v,v], [empty]] //3
 
 
-    def __init__():
+    def __init__(self, max_priority:int):
         """création d'une file avec priorité bornée utilisant une liste, priorité=index"""
+        self.__max_priority = max_priority
+        self.__cpt = 0
+        self.__list = []
+        for index in range(max_priority):
+            self.__list.append(SQueue())
         
     @property
     def max_priority(self):
         """envoie la valeur utlisée lors de la création de la file"""
+        return self.__max_priority
         
     def __len__(self)->int:
         """renvoie le nombre d’éléments dans la file"""
+        return self.__cpt
         
     def pop (self)->None:
         """enlève le premier élément de plus basse priorité
         require :file non vide"""
-        
-    def push(self)->None:
-        """permet d'inserer un élément"""
-        if p<max-priority:
-            return
+        if self.empty():
+            print('nothing to pop...')
         else:
-            return None #return temporaire pour faire passer la complilation
-            
+            self.__cpt -= 1
+            found = False
+            index = 0
+            while found == False and index != self.__max_priority:
+                if not self.__list[index].empty():
+                    self.__list[index].pop()
+                    found = True
+                index += 1
+        
+    def push(self,v:any,p:int)->None:
+        """permet d'inserer un élément"""
+        if 0>p>=self.max_priority :
+            print('priority not available...')
+        else:
+            self.__cpt += 1
+            self.__list[p].push(v)
+
     def first(self):
         """renvoie la première paire (v, p) de la liste
         require : file non vide"""
+        if self.empty():
+            return None
+        else:
+            index = 0
+            while index != self.__max_priority:
+                if not self.__list[index].empty():
+                    return [self.__list[index].first(), index]
+                index += 1
         
     def empty (self)->bool:
         """revoie vrai si la file est vide, faux sinon"""
+        return self.__cpt == 0
 
     def to_list(self)->list:
         """renvoie une liste python des paires (v, p) présentes dans la file, p=index"""
+        _store = []
+        index = 0
+        for sQueue in self.__list:
+            if not sQueue.empty():
+                for value in sQueue.to_list():
+                    _store.append([value, index])
+            index += 1
+        return _store
 
-    def howmany(self)->int:
+    def howmany(self, p:int)->int:
         """renvoie le nombre d’éléments dans la file ayant cette priorité"""
+        return len(self.__list[p])
         
     def summary(self)->list:
         """renvoie une liste python de taille max_priority et contenant la distribution des priorités ordonnées de manière croissante"""
+        _store = []
+        for sQueue in self.__list:
+            _store.append(len(sQueue))
+        print(_store)
+        return _store
 
 if __name__ == "__main__":
+
     code = """
 # creation file vide
 queue = BoundedOneQueue(10)
@@ -246,6 +294,49 @@ queue.howmany(1) == 1
 queue.howmany(3) == 0
 
 # summary
-queue.summary() == [0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+queue.summary() == [0, 1, 0, 0, 0, 1, 0, 0, 0, 0]
+
+# creation file vide
+queue = BoundedListQueue(10)
+
+# max_priority
+queue.max_priority
+
+# len
+len(queue)
+
+# pop
+queue.pop()
+
+# push
+len(queue) == 0
+queue.push(12, 5)
+len(queue) == 1
+
+print(queue.to_list())
+
+# first
+queue.push(10, 1)
+print(queue.to_list())
+queue.first() == [10, 1]
+
+# empty
+queue.empty() == False
+queue.pop()
+queue.pop()
+queue.empty() == True
+
+# to_list
+queue.push(28, 1)
+queue.push(11, 5)
+list = queue.to_list()
+print(list)
+
+# howmany
+queue.howmany(1) == 1
+queue.howmany(3) == 0
+
+# summary
+queue.summary() == [0, 1, 0, 0, 0, 1, 0, 0, 0, 0]
 
 """ ; testcode(code)
