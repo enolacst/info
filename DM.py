@@ -65,7 +65,20 @@ class BoundedOneQueue:
     def max_priority(self)->int:
         """envoie la valeur utlisée lors de la création de la file"""
         return self.__max_priority
-        
+    
+    """getters"""
+    @property
+    def cpt(self)->int:
+        return self.__cpt
+
+    @property
+    def hq(self)->QNode:
+        return self.__hq
+
+    @property
+    def tq(self)->QNode:
+        return self.__tq
+
     def __len__(self)->int:
         """renvoie le nombre d’éléments dans la file"""
         return self.__cpt
