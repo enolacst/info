@@ -202,7 +202,7 @@ class BoundedListQueue:
     @property
     def list(self)->int:
         return self.__list
-    @property   
+  
     def __len__(self)->int:
         """renvoie le nombre d’éléments dans la file"""
         return self.__cpt
