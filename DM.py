@@ -194,7 +194,7 @@ class BoundedListQueue:
         
     @property
     def max_priority(self):
-        """envoie la valeur utlisée lors de la création de la file"""
+        """renvoie la valeur utlisée lors de la création de la file"""
         return self.__max_priority
     @property
     def cpt(self)->int:
